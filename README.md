@@ -17,7 +17,7 @@ The script then downloads the video with the highest available resolution to a s
 To use this script, run the following command in your terminal:
 
 ```bash
-python ytdownload.py "your_youtube_link_here"
+python3 ytdownload.py "your_youtube_link_here"
 ```
 
 Replace `"your_youtube_link_here"` with the actual link to the YouTube video you want to download.
@@ -27,7 +27,7 @@ Replace `"your_youtube_link_here"` with the actual link to the YouTube video you
 This script requires the `pytube` library. You can install it using pip:
 
 ```bash
-pip install pytube
+pip3 install pytube
 ```
 
 Please note that the download path is currently hardcoded. You may need to modify the `download_path` variable in the script to match the directory where you want to save the videos.
