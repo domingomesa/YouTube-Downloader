@@ -40,3 +40,5 @@ except Exception as e:
 
 #Print success message
 print("DONE!")
+
+exit(0) #Exit program
