@@ -24,10 +24,10 @@ Replace `"your_youtube_link_here"` with the actual link to the YouTube video you
 
 ## Dependencies
 
-This script requires the `pytube` library. You can install it using pip:
+This script requires the `pyyt_dlp` library. You can install it using pip:
 
 ```bash
-pip3 install pytube
+pip3 install yt_dlp
 ```
 
 Please note that the download path is currently hardcoded. You may need to modify the `download_path` variable in the script to match the directory where you want to save the videos.

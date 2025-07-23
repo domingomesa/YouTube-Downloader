@@ -1,44 +1,47 @@
-from pytube import YouTube #Import YouTube library
-from sys import argv #Import command line argument library
+import yt_dlp #Import YouTube library
+import sys #Import command line argument library
 import os #Import operating system library
 
-#Check if command line argument is provided, ask user to provide link if not
-if len(argv) < 2:
-    print("Please provide a YouTube link as a command line argument in quotes.")
-    exit(1)
+def download_video(url, download_path):
+    ydl_opts = {
+        "outtmpl": os.path.join(download_path, "%(title)s.%(ext)s"),  # Set output template
+        "format": "best",  # Download the best quality available
+        "noplaylist": True,  # Download only the video, not the playlist
+    }
 
-link = argv[1] #Get YouTube link from command line
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        try:
+            #Get video information
+            info = ydl.extract_info(url, download=False)
+            print(f"Title: {info.get('title', 'N/A')}")
+            print(f"Views: {info.get('view_count', 'N/A')}")
+            
+            # Download the video
+            ydl.download([url])
+            print("DONE!")
 
-#Check if link is valid
-try:
-    yt = YouTube(link)
-except Exception as e:
-    print(f"An error occurred: {e}")
-    exit(1)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return False
 
-#Print video information
-print("Title: " + yt.title) #Get Video Title
-print("Views: " + str(yt.views)) #Get Video Views
+def main():
+    #Check if command line argument is provided, ask user to provide link if not
+    if len(sys.argv) < 2:
+        print("Please provide a YouTube link as a command line argument in quotes.")
+        sys.exit(1)
 
-#Download Yotube Video to directory
-yd = yt.streams.get_highest_resolution() #Get highest resolution video
+    url = sys.argv[1] #Get YouTube url from command line
+    #Set download path
+    download_path = sys.argv[2] if len(sys.argv) > 2 else os.getcwd() #Get download path from command line or use current working directory
 
-#Set download path
-download_path = "/Users/domingomesajr./Documents/Videos/YouTube Downloads"
+    #Check if directory exists
+    if not os.path.exists(download_path):
+        print(f"The directory {download_path} does not exist.")
+        sys.exit(1)
 
-#Check if directory exists
-if not os.path.exists(download_path):
-    print(f"The directory {download_path} does not exist.")
-    exit(1)
+    success = download_video(url, download_path)
 
-#Try to download video
-try:
-    yd.download(download_path)
-except Exception as e:
-    print(f"An error occurred: {e}")
-    exit(1)
+    sys.exit(0 if success else 1) #Exit program
 
-#Print success message
-print("DONE!")
-
-exit(0) #Exit program
+if __name__ == "__main__":
+    main()
